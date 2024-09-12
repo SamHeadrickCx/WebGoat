@@ -68,8 +68,13 @@ public class SqlInjectionLesson5b extends AssignmentEndpoint {
             query.setInt(1, count);
             //String query = "SELECT * FROM user_data WHERE Login_Count = " + login_count + " and userid = " + accountName, ;
             try {
-                ResultSet results = query.executeQuery();
-
+                ResultSet results;
+                
+                if (true) {
+                    results = query.executeQuery();
+                } else {
+                    results = query.executeQuery();
+                }
                 if ((results != null) && (results.first() == true)) {
                     ResultSetMetaData resultsMetaData = results.getMetaData();
                     StringBuffer output = new StringBuffer();

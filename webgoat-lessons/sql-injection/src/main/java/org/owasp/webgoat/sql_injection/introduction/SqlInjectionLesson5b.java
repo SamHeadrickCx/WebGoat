@@ -91,6 +91,31 @@ public class SqlInjectionLesson5b extends AssignmentEndpoint {
 
                 return failed(this).output(sqle.getMessage() + "<br> Your query was: " + queryString.replace("?", login_count)).build();
             }
+            
+            try {
+                ResultSet results = query.executeQuery();
+
+                if ((results != null) && (results.first() == true)) {
+                    ResultSetMetaData resultsMetaData = results.getMetaData();
+                    StringBuffer output = new StringBuffer();
+
+                    output.append(SqlInjectionLesson5a.writeTable(results, resultsMetaData));
+                    results.last();
+
+                    // If they get back more than one user they succeeded
+                    if (results.getRow() >= 6) {
+                        return success(this).feedback("sql-injection.5b.success").output("Your query was: " + queryString.replace("?", login_count)).feedbackArgs(output.toString()).build();
+                    } else {
+                        return failed(this).output(output.toString() + "<br> Your query was: " + queryString.replace("?", login_count)).build();
+                    }
+
+                } else {
+                    return failed(this).feedback("sql-injection.5b.no.results").output("Your query was: " + queryString.replace("?", login_count)).build();
+                }
+            } catch (SQLException sqle) {
+
+                return failed(this).output(sqle.getMessage() + "<br> Your query was: " + queryString.replace("?", login_count)).build();
+            }            
         } catch (Exception e) {
             return failed(this).output(this.getClass().getName() + " : " + e.getMessage() + "<br> Your query was: " + queryString.replace("?", login_count)).build();
         }

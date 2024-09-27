@@ -84,6 +84,8 @@ public class SqlInjectionLesson5b extends AssignmentEndpoint {
                         return failed(this).output(output.toString() + "<br> Your query was: " + queryString.replace("?", login_count)).build();
                     }
 
+                    ResultSet results = query.executeQuery();
+
                 } else {
                     return failed(this).feedback("sql-injection.5b.no.results").output("Your query was: " + queryString.replace("?", login_count)).build();
                 }
